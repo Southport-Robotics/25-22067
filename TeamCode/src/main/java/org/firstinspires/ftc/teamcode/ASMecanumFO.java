@@ -6,7 +6,6 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 //import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -34,7 +33,7 @@ public class ASMecanumFO extends OpMode {
         backLeftDrive = hardwareMap.get(DcMotor.class, "leftdriveback");
         backRightDrive = hardwareMap.get(DcMotor.class, "rightdriveback");
 
-        intake = hardwareMap.get(DcMotor.class, "Eater");
+        intake = hardwareMap.get(DcMotor.class, "Intake");
 
         // We set the left motors in reverse which is needed for drive trains where the left
         // motors are opposite to the right ones.
@@ -43,7 +42,7 @@ public class ASMecanumFO extends OpMode {
         backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
         backRightDrive.setDirection(DcMotor.Direction.REVERSE);
 
-        intake.setDirection(DcMotor.Direction.REVERSE);
+        intake.setDirection(DcMotor.Direction.FORWARD);
 
         // This uses RUN_USING_ENCODER to be more accurate.   If you don't have the encoder
         // wires, you should remove these
@@ -131,7 +130,7 @@ public class ASMecanumFO extends OpMode {
         maxPower = Math.max(maxPower, Math.abs(backRightPower));
         maxPower = Math.max(maxPower, Math.abs(backLeftPower));
 
-        if (gamepad2.a) { // or any other button
+        if (gamepad1.right_bumper) { // or any other button
             intake.setPower(1.0);
         } else {
             intake.setPower(0.0);
