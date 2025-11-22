@@ -25,7 +25,6 @@ public class ASMecanumFO extends OpMode {
 
     //DELARE IMU
     IMU imu;
-    
 
     @Override
     public void init() {
@@ -34,7 +33,7 @@ public class ASMecanumFO extends OpMode {
         backLeftDrive = hardwareMap.get(DcMotor.class, "leftdriveback");
         backRightDrive = hardwareMap.get(DcMotor.class, "rightdriveback");
 
-        intake = hardwareMap.get(DcMotor.class, "Intake");
+        intake = hardwareMap.get(DcMotor.class, "Eater");
 
         // We set the left motors in reverse which is needed for drive trains where the left
         // motors are opposite to the right ones.
