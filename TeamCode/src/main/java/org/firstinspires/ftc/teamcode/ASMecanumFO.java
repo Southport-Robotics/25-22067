@@ -25,6 +25,7 @@ public class ASMecanumFO extends OpMode {
 
     //DELARE IMU
     IMU imu;
+    
 
     @Override
     public void init() {
