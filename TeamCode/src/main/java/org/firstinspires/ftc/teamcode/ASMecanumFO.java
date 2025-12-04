@@ -99,6 +99,7 @@ public class ASMecanumFO extends OpMode {
     }
 
     // This routine drives the robot field relative
+
     private void driveFieldRelative(double forward, double right, double rotate) {
         // First, convert direction being asked to drive to polar coordinates
         double theta = Math.atan2(forward, right);
@@ -125,8 +126,8 @@ public class ASMecanumFO extends OpMode {
         double backRightPower = forward + right - rotate;
         double backLeftPower = forward - right + rotate;
 
-        double maxPower = 1.0;
-        double maxSpeed = 1.0;  // make this slower for outreaches
+        double maxPower = 75.0;
+        double maxSpeed = 75.0;  // make this slower for outreaches
 
         // This is needed to make sure we don't pass > 1.0 to any wheel
         // It allows us to keep all of the motors in proportion to what they should
@@ -136,14 +137,14 @@ public class ASMecanumFO extends OpMode {
         maxPower = Math.max(maxPower, Math.abs(backRightPower));
         maxPower = Math.max(maxPower, Math.abs(backLeftPower));
 
-        if (gamepad2.b) { // or any other button
+        if (gamepad2.left_bumper) { // or any other button
             intake.setPower(1.0);
         } else {
             intake.setPower(0.0);
         }
 
         if (gamepad2.a) { // or any other button
-            intake.setPower(-1.0);
+            intake.setPower(-5.0);
         } else {
             intake.setPower(0.0);
         }
