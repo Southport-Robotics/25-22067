@@ -136,13 +136,13 @@ public class ASMecanumFO extends OpMode {
         maxPower = Math.max(maxPower, Math.abs(backRightPower));
         maxPower = Math.max(maxPower, Math.abs(backLeftPower));
 
-        if (gamepad2.a) { // or any other button
+        if (gamepad2.b) { // or any other button
             intake.setPower(1.0);
         } else {
             intake.setPower(0.0);
         }
 
-        if (gamepad2.b) { // or any other button
+        if (gamepad2.a) { // or any other button
             intake.setPower(-1.0);
         } else {
             intake.setPower(0.0);
@@ -157,7 +157,7 @@ public class ASMecanumFO extends OpMode {
         */
 
         if (gamepad2.right_bumper) { // or any other button
-            outtake.setPower(7.0);
+            outtake.setPower(0.9);
         } else {
             outtake.setPower(0.0);
         }
