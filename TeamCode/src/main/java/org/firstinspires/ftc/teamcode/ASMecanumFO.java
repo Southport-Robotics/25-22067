@@ -6,6 +6,7 @@ import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 //import com.qualcomm.robotcore.hardware.DcMotorSimple;
+import com.qualcomm.robotcore.hardware.DcMotorSimple;
 import com.qualcomm.robotcore.hardware.IMU;
 
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
@@ -23,6 +24,9 @@ public class ASMecanumFO extends OpMode {
     //DECLARE INTAKE
     private DcMotor intake = null;
 
+    //DECLARE OUTTAKE
+    private DcMotor outtake = null;
+
     //DELARE IMU
     IMU imu;
 
@@ -34,6 +38,7 @@ public class ASMecanumFO extends OpMode {
         backRightDrive = hardwareMap.get(DcMotor.class, "rightdriveback");
 
         intake = hardwareMap.get(DcMotor.class, "Eater");
+        outtake = hardwareMap.get(DcMotor.class, "Pooper");
 
         // We set the left motors in reverse which is needed for drive trains where the left
         // motors are opposite to the right ones.
@@ -43,6 +48,7 @@ public class ASMecanumFO extends OpMode {
         backRightDrive.setDirection(DcMotor.Direction.REVERSE);
 
         intake.setDirection(DcMotor.Direction.REVERSE);
+        outtake.setDirection(DcMotor.Direction.REVERSE);
 
         // This uses RUN_USING_ENCODER to be more accurate.   If you don't have the encoder
         // wires, you should remove these
@@ -134,6 +140,26 @@ public class ASMecanumFO extends OpMode {
             intake.setPower(1.0);
         } else {
             intake.setPower(0.0);
+        }
+
+        if (gamepad2.b) { // or any other button
+            intake.setPower(-1.0);
+        } else {
+            intake.setPower(0.0);
+        }
+
+        /*
+        if (gamepad2.a) {
+            intake.setDirection(DcMotor.Direction.FORWARD);
+        } else {
+            intake.setDirection(DcMotor.Direction.REVERSE);
+        }
+        */
+
+        if (gamepad2.right_bumper) { // or any other button
+            outtake.setPower(7.0);
+        } else {
+            outtake.setPower(0.0);
         }
 
 
