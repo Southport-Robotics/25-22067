@@ -1,7 +1,9 @@
+/*
 package org.firstinspires.ftc.teamcode;
 
 import com.pedropathing.follower.Follower;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
+import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.OpMode;
 import com.pedropathing.util.Timer;
 
@@ -28,3 +30,5 @@ public class autoooooomouss extends OpMode {
 
     }
 }
+
+ */

@@ -32,13 +32,13 @@ public class ASMecanumFO extends OpMode {
 
     @Override
     public void init() {
-        frontLeftDrive = hardwareMap.get(DcMotor.class, "leftdrivefront");
-        frontRightDrive = hardwareMap.get(DcMotor.class, "rightdrivefront");
-        backLeftDrive = hardwareMap.get(DcMotor.class, "leftdriveback");
-        backRightDrive = hardwareMap.get(DcMotor.class, "rightdriveback");
+        frontLeftDrive = hardwareMap.get(DcMotor.class, "FL");
+        frontRightDrive = hardwareMap.get(DcMotor.class, "FR");
+        backLeftDrive = hardwareMap.get(DcMotor.class, "BL");
+        backRightDrive = hardwareMap.get(DcMotor.class, "BR");
 
-        intake = hardwareMap.get(DcMotor.class, "Eater");
-        outtake = hardwareMap.get(DcMotor.class, "Pooper");
+        intake = hardwareMap.get(DcMotor.class, "IN");
+        outtake = hardwareMap.get(DcMotor.class, "OUT");
 
         // We set the left motors in reverse which is needed for drive trains where the left
         // motors are opposite to the right ones.
@@ -47,7 +47,7 @@ public class ASMecanumFO extends OpMode {
         backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
         backRightDrive.setDirection(DcMotor.Direction.REVERSE);
 
-        intake.setDirection(DcMotor.Direction.REVERSE);
+        intake.setDirection(DcMotor.Direction.FORWARD);
         outtake.setDirection(DcMotor.Direction.REVERSE);
 
         // This uses RUN_USING_ENCODER to be more accurate.   If you don't have the encoder
@@ -57,15 +57,19 @@ public class ASMecanumFO extends OpMode {
         backLeftDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
         backRightDrive.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
 
+        //outtake.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
+       outtake.setZeroPowerBehavior(DcMotor.ZeroPowerBehavior.BRAKE);
+
 
 
 
         imu = hardwareMap.get(IMU.class, "imu");
         // This needs to be changed to match the orientation on your robot
         RevHubOrientationOnRobot.LogoFacingDirection logoDirection =
-                RevHubOrientationOnRobot.LogoFacingDirection.UP;
+                RevHubOrientationOnRobot.LogoFacingDirection.RIGHT;
         RevHubOrientationOnRobot.UsbFacingDirection usbDirection =
-                RevHubOrientationOnRobot.UsbFacingDirection.FORWARD;
+                RevHubOrientationOnRobot.UsbFacingDirection.BACKWARD;
 
         RevHubOrientationOnRobot orientationOnRobot = new
                 RevHubOrientationOnRobot(logoDirection, usbDirection);
@@ -90,7 +94,10 @@ public class ASMecanumFO extends OpMode {
         if (gamepad1.left_bumper) {
             //    drive(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x); //origional
             //    drive(-gamepad1.right_stick_x, gamepad1.left_stick_x, gamepad1.left_stick_y); // updated
-            driveFieldRelative(-gamepad1.right_stick_x, gamepad1.left_stick_x, gamepad1.left_stick_y); //modified new
+            //driveFieldRelative(-gamepad1.right_stick_x, gamepad1.left_stick_x, gamepad1.left_stick_y); //modified new
+
+            // cubing (raising to the power of 3) am input gives more low-speed control
+            driveFieldRelative(-gamepad1.right_stick_x, gamepad1.left_stick_x, Math.pow(gamepad1.left_stick_y, 3)); //modified new
         } else {
             //    driveFieldRelative(-gamepad1.left_stick_y, gamepad1.left_stick_x, gamepad1.right_stick_x); //origional
             //    driveFieldRelative(-gamepad1.right_stick_x, gamepad1.left_stick_x, gamepad1.left_stick_y); //updated
@@ -117,17 +124,16 @@ public class ASMecanumFO extends OpMode {
         drive(newForward, newRight, rotate);
     }
 
-    // Thanks to FTC16072 for sharing this code!!
     public void drive(double forward, double right, double rotate) {
         // This calculates the power needed for each wheel based on the amount of forward,
         // strafe right, and rotate
-        double frontLeftPower = forward + right + rotate;
+        double frontLeftPower = forward - right + rotate;
         double frontRightPower = forward - right - rotate;
         double backRightPower = forward + right - rotate;
-        double backLeftPower = forward - right + rotate;
+        double backLeftPower = forward + right + rotate;
 
-        double maxPower = 75.0;
-        double maxSpeed = 75.0;  // make this slower for outreaches
+        double maxPower = 1.0;
+        double maxSpeed = 1.0;  // make this slower for outreaches
 
         // This is needed to make sure we don't pass > 1.0 to any wheel
         // It allows us to keep all of the motors in proportion to what they should
@@ -144,33 +150,34 @@ public class ASMecanumFO extends OpMode {
         }
 
         if (gamepad2.a) { // or any other button
-            intake.setPower(-5.0);
+            intake.setPower(-.5);
         } else {
             intake.setPower(0.0);
         }
 
-        /*
-        if (gamepad2.a) {
-            intake.setDirection(DcMotor.Direction.FORWARD);
-        } else {
-            intake.setDirection(DcMotor.Direction.REVERSE);
-        }
-        */
 
+        //if (gamepad2.a) {
+        //    intake.setDirection(DcMotor.Direction.FORWARD);
+        //} else {
+       //     intake.setDirection(DcMotor.Direction.REVERSE);
+       // }
+
+        //outtake.setPower(gamepad2.right_trigger);
         if (gamepad2.right_bumper) { // or any other button
-            outtake.setPower(0.9);
+            outtake.setPower(1.0);
         } else {
-            outtake.setPower(0.0);
+           outtake.setPower(-.05);
         }
+
 
 
 
         // We multiply by maxSpeed so that it can be set lower for outreaches
         // When a young child is driving the robot, we may not want to allow full
         // speed.
-        frontLeftDrive.setPower(maxSpeed * (frontLeftPower / maxPower));
-        frontRightDrive.setPower(maxSpeed * (frontRightPower / maxPower));
-        backLeftDrive.setPower(maxSpeed * (backLeftPower / maxPower));
-        backRightDrive.setPower(maxSpeed * (backRightPower / maxPower));
+        frontLeftDrive.setPower(maxSpeed * (frontLeftPower / maxPower) * .75);
+        frontRightDrive.setPower(maxSpeed * (frontRightPower / maxPower) * .75);
+        backLeftDrive.setPower(maxSpeed * (backLeftPower / maxPower) * .75);
+        backRightDrive.setPower(maxSpeed * (backRightPower / maxPower) * .75);
     }
 }
