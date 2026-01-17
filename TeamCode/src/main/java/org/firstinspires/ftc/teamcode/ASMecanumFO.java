@@ -47,7 +47,7 @@ public class ASMecanumFO extends OpMode {
         backLeftDrive.setDirection(DcMotor.Direction.FORWARD);
         backRightDrive.setDirection(DcMotor.Direction.REVERSE);
 
-        intake.setDirection(DcMotor.Direction.FORWARD);
+        intake.setDirection(DcMotor.Direction.REVERSE);
         outtake.setDirection(DcMotor.Direction.REVERSE);
 
         // This uses RUN_USING_ENCODER to be more accurate.   If you don't have the encoder
